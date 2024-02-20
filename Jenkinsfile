@@ -1,12 +1,18 @@
 pipeline {
     agent any
 
-    tools {
-        // Asegúrate de tener python y pytest instalados en el agente donde se ejecutará esto
-        python 'Python3'
-    }
-
     stages {
+        stage('Setup Python Environment') {
+            steps {
+                // Crea un entorno virtual de Python e instala las dependencias
+                sh '''
+                python3 -m venv venv
+                . venv/bin/activate
+                pip install pytest
+                '''
+            }
+        }
+
         stage('Checkout') {
             steps {
                 // Este comando clona tu repositorio de GitHub
@@ -16,9 +22,13 @@ pipeline {
 
         stage('Test') {
             steps {
-                // Ejecuta tu archivo de pruebas
-                sh 'echo "Test stage"'
+                // Activa el entorno virtual y ejecuta tus pruebas
+                sh '''
+                . venv/bin/activate
+                python -m pytest test.py
+                '''
             }
         }
     }
 }
+
