@@ -1,5 +1,10 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'python:3.8' // O la versión que prefieras
+            args '-u root' // Correr como root dentro del contenedor
+        }
+    }
 
     stages {
         stage('Checkout') {
