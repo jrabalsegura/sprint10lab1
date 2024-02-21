@@ -61,6 +61,19 @@ pipeline {
                 }
             }
         }
+
+        stage('Push Docker Image') {
+            steps {
+                script {
+                    if (env.BRANCH_NAME == 'main') {
+                        echo 'Pushing Docker Image...'
+                        // Comandos para construir y empujar la imagen Docker
+                    } else {
+                        echo "Skipping push for branch ${env.BRANCH_NAME}"
+                    }
+                }
+            }
+        }
     }
 }
 
