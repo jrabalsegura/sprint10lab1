@@ -62,11 +62,17 @@ pipeline {
                     if (branchName == 'main') {
                         
                         // Etiquetar la imagen para Amazon ECR
-                        sh("docker tag ${dockerImageName} ${ecrImageName}")
+                        //sh("docker tag ${dockerImageName} ${ecrImageName}")
                         
-                        withAWS(credentials: AWS_ECR_CREDENTIALS_ID, region: 'eu-west-1') {
-                            sh "aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin ${ECR_REGISTRY}"
-                            sh "docker push ${dockerImageName}"
+                        //withAWS(credentials: AWS_ECR_CREDENTIALS_ID, region: 'eu-west-1') {
+                        //    sh "aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin ${ECR_REGISTRY}"
+                        //    sh "docker push ${dockerImageName}"
+                        //
+                        docker.withRegistry('', AWS_ECR_CREDENTIALS_ID) {
+                            // Etiquetar la imagen para Amazon ECR
+                            sh "docker tag ${localImageName} ${ecrImageName}"
+                            // Empujar la imagen a Amazon ECR
+                            sh "docker push ${ecrImageName}"
                         }
                     } else {
                         // Iniciar sesión en el registro Docker
