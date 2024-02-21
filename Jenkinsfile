@@ -53,8 +53,6 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 script {
-                    
-                    def branchName = getGitBranchName()
                     def imageTag = "${env.BUILD_ID}"
                     def dockerImageName = "${IMAGE_NAME}:${imageTag}"
                     def ecrImageName = "${ECR_REGISTRY}:${imageTag}"
@@ -66,7 +64,6 @@ pipeline {
                         
                         withAWS(credentials: AWS_ECR_CREDENTIALS_ID, region: 'eu-west-1') {
                             sh "aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin ${ECR_REGISTRY}"
-                            //sh "docker push ${ecrImageName}"
                             docker.image(ecrImageName).push()
                         }
                     } else {
