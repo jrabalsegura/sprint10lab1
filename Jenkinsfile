@@ -53,16 +53,10 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 script {
-                    def image = docker.image("${IMAGE_NAME}:${env.BUILD_ID}")
                     if (getGitBranchName() == 'main') {
-                        //def ecrImageTag = "${env.BUILD_ID}"
-                        
-                        // Iniciar sesión en ECR y empujar la imagen
-                        def ecrImage = "${ECR_REGISTRY}/mi-aplication-flask/${env.BUILD_ID}" // Etiqueta para ECR
-                        image.tag(ecrImage)
-                        withAWS(credentials: AWS_ECR_CREDENTIALS_ID, region: 'eu-west-1') {
-                            sh "aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin ${ECR_REGISTRY}"
-                            image.push(ecrImage)
+                        docker.withRegistry(ECR_REGISTRY, AWS_ECR_CREDENTIALS_ID) {
+                            // Empujar la imagen al registro ECR
+                            docker.image("${IMAGE_NAME}:${env.BUILD_ID}").push()
                         }
                         
                     } else {
