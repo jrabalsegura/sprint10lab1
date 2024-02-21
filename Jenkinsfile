@@ -57,7 +57,7 @@ pipeline {
                     def branchName = getGitBranchName()
                     def imageTag = "${env.BUILD_ID}"
                     def dockerImageName = "gallasmur/mi-aplicacion-flask-${branchName}:${imageTag}"
-                    def ecrImageName = "${ECR_REGISTRY}/mi-aplicacion-flask-${branchName}:${imageTag}"
+                    def ecrImageName = "${ECR_REGISTRY}/gallasmur/mi-aplicacion-flask-${branchName}:${imageTag}"
 
                     if (branchName == 'main') {
                         
@@ -66,7 +66,8 @@ pipeline {
                         
                         withAWS(credentials: AWS_ECR_CREDENTIALS_ID, region: 'eu-west-1') {
                             sh "aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin ${ECR_REGISTRY}"
-                            sh "docker push ${ecrImageName}"
+                            //sh "docker push ${ecrImageName}"
+                            docker.image(ecrImageName).push()
                         }
                     } else {
                         // Iniciar sesión en el registro Docker
