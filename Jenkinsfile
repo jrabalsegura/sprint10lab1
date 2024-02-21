@@ -52,10 +52,10 @@ pipeline {
                 script {
                     if (getGitBranchName() == '*/main') {
                         echo 'Pushing Docker Image...'
-                        // Iniciar sesión en el registro Docker (ajustar según sea necesario)
+                        // Iniciar sesión en el registro Docker
                         docker.withRegistry('https://index.docker.io/v1/', DOCKER_CREDENTIALS_ID) {
                             // Empujar la imagen al registro Docker
-                            docker.image("mi-aplicacion-flask:${env.BUILD_ID}").push()
+                            docker.image("gallasmur/mi-aplicacion-flask:${env.BUILD_ID}").push()
                         }
                     } else {
                         echo "Skipping push for branch ${getGitBranchName()}"
