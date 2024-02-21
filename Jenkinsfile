@@ -57,7 +57,7 @@ pipeline {
                     def dockerImageName = "${IMAGE_NAME}:${imageTag}"
                     def ecrImageName = "${ECR_REGISTRY}:${imageTag}"
 
-                    if (branchName == 'main') {
+                    if (getGitBranchName() == 'main') {
                         
                         // Etiquetar la imagen para Amazon ECR
                         sh("docker tag ${dockerImageName} ${ecrImageName}")
