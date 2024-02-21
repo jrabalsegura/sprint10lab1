@@ -21,7 +21,8 @@ def insert_data():
 
 @data_routes.route("/data", methods=["GET"])
 def get_all_data():
-    data_list = [{"id": data.id, "name": data.name} for data in Data.query.all()]
+    data_list = [{"id": data.id, "name": data.name}
+                 for data in Data.query.all()]
     return jsonify(data_list)
 
 

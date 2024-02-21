@@ -11,7 +11,7 @@ def create_app(config_name):
 
     # Initialize the database
     db.init_app(app)
- 
+
     # Import blueprints/routes
     from app.routes import data_routes
 
