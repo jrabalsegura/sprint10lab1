@@ -19,7 +19,7 @@ pipeline {
 
                 // Paso 4: Ejecutar tests
                 sh '''
-                pytest test/test.py
+                pytest tests/test.py
                 '''
             }
         }
