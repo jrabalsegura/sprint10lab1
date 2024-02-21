@@ -55,8 +55,8 @@ pipeline {
                 script {
                     
                     if (getGitBranchName() == 'main') {
-                        docker.image("${IMAGE_NAME}:${env.BUILD_ID}").tag("${ECR_REGISTRY}:${IMAGE_NAME}:${env.BUILD_ID}")
-                        docker.image("${ECR_REGISTRY}:${IMAGE_NAME}:${env.BUILD_ID}").push()
+                        docker.image("${IMAGE_NAME}:${env.BUILD_ID}").tag("${ECR_REGISTRY}:${env.BUILD_ID}")
+                        docker.image("${IMAGE_NAME}:${env.BUILD_ID}").push()
                     } else {
                         // Iniciar sesión en el registro Docker
                         docker.withRegistry('https://index.docker.io/v1/', DOCKER_CREDENTIALS_ID) {
