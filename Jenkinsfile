@@ -1,9 +1,8 @@
 pipeline {
     agent {
         docker {
-            image 'python:3.8' // O la versión que prefieras
-            args '-u root' // Correr como root dentro del contenedor
-        }
+            image 'python:bookworm'
+        }   
     }
 
     stages {
@@ -15,14 +14,8 @@ pipeline {
         }
 
         stage('Setup and Test') {
+            
             steps {
-                // Paso 2: Configurar un entorno virtual y activarlo
-                sh '''
-                apt-get install python3-venv
-                python3 -m venv venv
-                source venv/bin/activate
-                '''
-
                 // Paso 3: Instalar dependencias desde requirements.txt
                 sh '''
                 pip install -r requirements.txt
