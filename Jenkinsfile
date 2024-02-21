@@ -42,7 +42,7 @@ pipeline {
             steps {
                 script {
                     // Paso 5: Construir la imagen Docker
-                    docker.build("gallasmur/mi-aplicacion-flask:${env.BUILD_ID}")
+                    docker.build("gallasmur/mi-aplicacion-flask-${getGitBranchName()}:${env.BUILD_ID}")
                 }
             }
         }
