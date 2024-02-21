@@ -55,13 +55,13 @@ pipeline {
                 script {
                     def image = docker.image("${IMAGE_NAME}:${env.BUILD_ID}")
                     if (getGitBranchName() == 'main') {
-                        def ecrImageTag = "${env.BUILD_ID}"
+                        //def ecrImageTag = "${env.BUILD_ID}"
                         
                         // Iniciar sesión en ECR y empujar la imagen
                         withAWS(credentials: AWS_ECR_CREDENTIALS_ID, region: 'eu-west-1') {
                             sh "aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin ${ECR_REGISTRY}"
-                            image.tag(ecrImageTag)
-                            docker.image(ecrImageTag).push()
+                            //image.tag(ecrImageTag)
+                            docker.image("${IMAGE_NAME}:${env.BUILD_ID}").push()
                         }
                         
                     } else {
