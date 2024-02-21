@@ -45,7 +45,7 @@ pipeline {
             steps {
                 script {
                     // Paso 5: Construir la imagen Docker
-                    docker.build("${IMAGENAME}:${env.BUILD_ID}")
+                    docker.build("${IMAGE_NAME}:${env.BUILD_ID}")
                 }
             }
         }
