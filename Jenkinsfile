@@ -48,26 +48,15 @@ pipeline {
         }
 
         stage('Push Docker Image') {
-            when {
-                branch 'main' 
-            }
-            steps {
-                script {
-                    // Iniciar sesión en el registro Docker (ajustar según sea necesario)
-                    docker.withRegistry('https://index.docker.io/v1/', DOCKER_CREDENTIALS_ID) {
-                        // Empujar la imagen al registro Docker
-                        docker.image("mi-aplicacion-flask:${env.BUILD_ID}").push()
-                    }
-                }
-            }
-        }
-
-        stage('Push Docker Image2') {
             steps {
                 script {
                     if (getGitBranchName() == '*/main') {
                         echo 'Pushing Docker Image...'
-                        // Comandos para construir y empujar la imagen Docker
+                        // Iniciar sesión en el registro Docker (ajustar según sea necesario)
+                        docker.withRegistry('https://index.docker.io/v1/', DOCKER_CREDENTIALS_ID) {
+                            // Empujar la imagen al registro Docker
+                            docker.image("mi-aplicacion-flask:${env.BUILD_ID}").push()
+                        }
                     } else {
                         echo "Skipping push for branch ${getGitBranchName()}"
                     }
