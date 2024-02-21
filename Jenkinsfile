@@ -57,7 +57,7 @@ pipeline {
                     def branchName = getGitBranchName()
                     def imageTag = "${env.BUILD_ID}"
                     def dockerImageName = "gallasmur/mi-aplicacion-flask-${branchName}:${imageTag}"
-                    def ecrImageName = "${ECR_REGISTRY}/gallasmur/mi-aplicacion-flask-${branchName}:${imageTag}"
+                    def ecrImageName = "${ECR_REGISTRY}:${imageTag}"
 
                     if (branchName == 'main') {
                         
