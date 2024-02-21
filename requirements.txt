@@ -4,5 +4,6 @@ psycopg2-binary
 Flask-SQLAlchemy
 pytest
 pytest-cov
+flake8
 
 

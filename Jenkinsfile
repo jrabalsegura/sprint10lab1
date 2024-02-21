@@ -17,15 +17,21 @@ pipeline {
                 pip install -r requirements.txt
                 '''
 
-                // Paso 2: Ejecutar tests
+                // Paso 3: Ejecutar tests
                 sh '''
                 pytest tests/test.py
                 '''
 
-                // Paso 3: Comprobar que cobertura es mayor al 80%
+                // Paso 4: Comprobar que cobertura es mayor al 80%
                 sh '''
                 pytest --cov=app tests/test.py --cov-report term --cov-fail-under=80
                 '''
+            }
+        }
+
+        stage('Linting') {
+            steps {
+                sh 'flake8 app/'
             }
         }
     }
