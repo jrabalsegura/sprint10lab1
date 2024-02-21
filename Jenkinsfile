@@ -3,7 +3,7 @@ pipeline {
     environment {
         DOCKER_CREDENTIALS_ID = 'docker-hub-credentials'
         AWS_ECR_CREDENTIALS_ID = 'aws-ecr-credentials'
-        ECR_REGISTRY = 'https://149032109728.dkr.ecr.eu-west-1.amazonaws.com/proyectofinal'
+        ECR_REGISTRY = '149032109728.dkr.ecr.eu-west-1.amazonaws.com/proyectofinal'
         IMAGE_NAME = "gallasmur/mi-aplicacion-flask-${getGitBranchName()}"
     }
 
@@ -53,12 +53,10 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 script {
+                    
                     if (getGitBranchName() == 'main') {
-                        docker.withRegistry(ECR_REGISTRY, AWS_ECR_CREDENTIALS_ID) {
-                            // Empujar la imagen al registro ECR
-                            docker.image("${IMAGE_NAME}:${env.BUILD_ID}").push()
-                        }
-                        
+                        docker.image("${IMAGE_NAME}:${env.BUILD_ID}").tag("${ECR_REGISTRY}:${IMAGE_NAME}:${env.BUILD_ID}")
+                        docker.image("${ECR_REGISTRY}:${IMAGE_NAME}:${env.BUILD_ID}").push()
                     } else {
                         // Iniciar sesión en el registro Docker
                         docker.withRegistry('https://index.docker.io/v1/', DOCKER_CREDENTIALS_ID) {
