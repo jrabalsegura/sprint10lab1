@@ -65,3 +65,33 @@ Para habilitar el flujo de trabajo descrito anteriormente, asegúrate de seguir 
 ### Clonar el Repositorio
 
 git clone https://github.com/jrabalsegura/sprint10lab1.git
+
+## Despliegue posterior en EKS
+
+Tras haber sido creada la infraestructura cómo código en Terraform, podríamos continuar el despliegue desde este mismo script Jenkins. El código podría ser algo así:
+
+```groovy
+stage('Deploy to EKS') {
+    when {
+        branch 'main'
+    }
+    steps {
+        script {
+            sh "aws eks --region eu-west-1 update-kubeconfig --name nombre-de-cluster-eks"
+
+            // Habría que tener configurado el manifiesto de Kubernetes para que estuviera configurado con la etiqueta 'latest' y por lo tanto siempre apuntara a la imagen de producción más reciente.
+
+            // Además en el manifiesto también indicariamos que el update será del tipo RollingUpdate
+
+            // Aplicar el manifiesto al clúster de EKS
+            sh "kubectl apply -f k8s/deployment.yaml"
+
+            // Opcional: Verificar el despliegue
+            sh "kubectl rollout status deployment/<nombre-de-tu-deployment>"
+        }
+    }
+}
+
+```
+
+Además, en Terraform habrían quedado configurados servicios como CloudWatch y ELB, con lo que esta pipeline solo nos ocupamos del despiegue al cluster de la nueva versión de la aplicación.
