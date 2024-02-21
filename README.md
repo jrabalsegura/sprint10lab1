@@ -86,7 +86,7 @@ stage('Deploy to EKS') {
             // Aplicar el manifiesto al clúster de EKS
             sh "kubectl apply -f k8s/deployment.yaml"
 
-            // Opcional: Verificar el despliegue
+            // Verificar el despliegue
             sh "kubectl rollout status deployment/<nombre-de-tu-deployment>"
         }
     }
