@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    environment {
+        DOCKER_CREDENTIALS_ID = 'docker-hub-credentials'
+    }
 
     stages {
         stage('Checkout') {
@@ -40,6 +43,21 @@ pipeline {
                 script {
                     // Paso 5: Construir la imagen Docker
                     docker.build("mi-aplicacion-flask:${env.BUILD_ID}")
+                }
+            }
+        }
+
+        stage('Push Docker Image') {
+            when {
+                branch 'main' 
+            }
+            steps {
+                script {
+                    // Iniciar sesión en el registro Docker (ajustar según sea necesario)
+                    docker.withRegistry('https://index.docker.io/v1/', DOCKER_CREDENTIALS_ID) {
+                        // Empujar la imagen al registro Docker
+                        docker.image("mi-aplicacion-flask:${env.BUILD_ID}").push()
+                    }
                 }
             }
         }
