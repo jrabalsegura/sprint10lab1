@@ -3,7 +3,7 @@ pipeline {
     environment {
         DOCKER_CREDENTIALS_ID = 'docker-hub-credentials'
         AWS_ECR_CREDENTIALS_ID = 'aws-ecr-credentials'
-        ECR_REGISTRY = '149032109728.dkr.ecr.eu-west-1.amazonaws.com/proyectofinal'
+        ECR_REGISTRY = 'https://149032109728.dkr.ecr.eu-west-1.amazonaws.com/proyectofinal'
         IMAGE_NAME = "gallasmur/mi-aplicacion-flask-${getGitBranchName()}"
     }
 
