@@ -1,5 +1,9 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'python:bookworm'
+        }   
+    }
 
     stages {
         stage('Checkout') {
@@ -10,13 +14,8 @@ pipeline {
         }
 
         stage('Setup and Test') {
+            
             steps {
-                // Paso 2: Configurar un entorno virtual y activarlo
-                sh '''
-                python3 -m venv venv
-                source venv/bin/activate
-                '''
-
                 // Paso 3: Instalar dependencias desde requirements.txt
                 sh '''
                 pip install -r requirements.txt
