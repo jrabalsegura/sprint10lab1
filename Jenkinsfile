@@ -13,7 +13,7 @@ pipeline {
             steps {
                 // Paso 2: Configurar un entorno virtual y activarlo
                 sh '''
-                sudo apt-get install python3-venv
+                apt-get install python3-venv
                 python3 -m venv venv
                 source venv/bin/activate
                 '''
