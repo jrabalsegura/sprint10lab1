@@ -1,9 +1,5 @@
 pipeline {
-    agent {
-        docker {
-            image 'python:bookworm'
-        }   
-    }
+    agent any
 
     stages {
         stage('Checkout') {
