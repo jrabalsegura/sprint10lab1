@@ -66,7 +66,7 @@ pipeline {
                         
                         withAWS(credentials: AWS_ECR_CREDENTIALS_ID, region: 'eu-west-1') {
                             sh "aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin ${ECR_REGISTRY}"
-                            sh "docker push ${ecrImageName}"
+                            sh "docker push ${dockerImageName}"
                         }
                     } else {
                         // Iniciar sesión en el registro Docker
