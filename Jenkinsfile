@@ -56,7 +56,7 @@ pipeline {
                     
                     def branchName = getGitBranchName()
                     def imageTag = "${env.BUILD_ID}"
-                    def dockerImageName = "gallasmur/mi-aplicacion-flask-${branchName}:${imageTag}"
+                    def dockerImageName = "${IMAGE_NAME}:${imageTag}"
                     def ecrImageName = "${ECR_REGISTRY}:${imageTag}"
 
                     if (branchName == 'main') {
@@ -73,7 +73,7 @@ pipeline {
                         // Iniciar sesión en el registro Docker
                         docker.withRegistry('https://index.docker.io/v1/', DOCKER_CREDENTIALS_ID) {
                             // Empujar la imagen al registro Docker
-                            docker.image("gallasmur/mi-aplicacion-flask-${getGitBranchName()}:${env.BUILD_ID}").push()
+                            docker.image("${IMAGE_NAME}:${env.BUILD_ID}").push()
                         }
                     }
                 }
