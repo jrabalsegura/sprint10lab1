@@ -2,6 +2,9 @@ pipeline {
     agent any
     environment {
         DOCKER_CREDENTIALS_ID = 'docker-hub-credentials'
+        AWS_ECR_CREDENTIALS_ID = 'aws-ecr-credentials'
+        ECR_REGISTRY = '149032109728.dkr.ecr.eu-west-1.amazonaws.com/proyectofinal'
+        IMAGE_NAME = "gallasmur/mi-aplicacion-flask-${getGitBranchName()}"
     }
 
     stages {
@@ -42,7 +45,7 @@ pipeline {
             steps {
                 script {
                     // Paso 5: Construir la imagen Docker
-                    docker.build("gallasmur/mi-aplicacion-flask-${getGitBranchName()}:${env.BUILD_ID}")
+                    docker.build("${IMAGENAME}:${env.BUILD_ID}")
                 }
             }
         }
@@ -50,15 +53,21 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 script {
+                    def image = docker.image("${IMAGE_NAME}:${env.BUILD_ID}")
                     if (getGitBranchName() == 'main') {
-                        echo 'Pushing Docker Image...'
+                        // Iniciar sesión en ECR y empujar la imagen
+                        withAWS(credentials: AWS_ECR_CREDENTIALS_ID, region: 'eu-west-1') {
+                            sh "aws ecr get-login-password --region your-region | docker login --username AWS --password-stdin ${ECR_REGISTRY}"
+                            image.tag("${ECR_REGISTRY}/${IMAGE_NAME}:${env.BUILD_ID}")
+                            image.push()
+                        }
+                        
+                    } else {
                         // Iniciar sesión en el registro Docker
                         docker.withRegistry('https://index.docker.io/v1/', DOCKER_CREDENTIALS_ID) {
                             // Empujar la imagen al registro Docker
                             docker.image("gallasmur/mi-aplicacion-flask-${getGitBranchName()}:${env.BUILD_ID}").push()
                         }
-                    } else {
-                        echo "Skipping push for branch ${getGitBranchName()}"
                     }
                 }
             }
