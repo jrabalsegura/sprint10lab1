@@ -50,7 +50,7 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 script {
-                    if (getGitBranchName() == '*/main') {
+                    if (getGitBranchName() == 'main') {
                         echo 'Pushing Docker Image...'
                         // Iniciar sesión en el registro Docker
                         docker.withRegistry('https://index.docker.io/v1/', DOCKER_CREDENTIALS_ID) {
@@ -67,6 +67,6 @@ pipeline {
 }
 
 def getGitBranchName() {
-    return scm.branches[0].name
+    return scm.branches[0].name.substring(2)
 }
 
