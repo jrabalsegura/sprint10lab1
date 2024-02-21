@@ -34,6 +34,15 @@ pipeline {
                 sh 'flake8 app/'
             }
         }
+
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    // Paso 5: Construir la imagen Docker
+                    docker.build("mi-aplicacion-flask:${env.BUILD_ID}")
+                }
+            }
+        }
     }
 }
 
