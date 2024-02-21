@@ -58,8 +58,8 @@ pipeline {
                         // Iniciar sesión en ECR y empujar la imagen
                         withAWS(credentials: AWS_ECR_CREDENTIALS_ID, region: 'eu-west-1') {
                             sh "aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin ${ECR_REGISTRY}"
-                            image.tag("${ECR_REGISTRY}/${IMAGE_NAME}:${env.BUILD_ID}")
-                            image.push()
+                            image.tag("${ECR_REGISTRY}:${env.BUILD_ID}")
+                            image.push("${env.BUILD_ID}", true)
                         }
                         
                     } else {
