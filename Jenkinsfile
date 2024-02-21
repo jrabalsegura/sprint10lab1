@@ -65,15 +65,19 @@ pipeline {
         stage('Push Docker Image2') {
             steps {
                 script {
-                    if (env.BRANCH_NAME == 'main') {
+                    if (getGitBranchName() == 'main') {
                         echo 'Pushing Docker Image...'
                         // Comandos para construir y empujar la imagen Docker
                     } else {
-                        echo "Skipping push for branch ${env.BRANCH_NAME}"
+                        echo "Skipping push for branch ${getGitBranchName()}"
                     }
                 }
             }
         }
     }
+}
+
+def getGitBranchName() {
+    return scm.branches[0].name
 }
 
