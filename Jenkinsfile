@@ -55,7 +55,7 @@ pipeline {
                         // Iniciar sesión en el registro Docker
                         docker.withRegistry('https://index.docker.io/v1/', DOCKER_CREDENTIALS_ID) {
                             // Empujar la imagen al registro Docker
-                            docker.image("gallasmur/mi-aplicacion-flask:${env.BUILD_ID}").push()
+                            docker.image("gallasmur/mi-aplicacion-flask-${getGitBranchName()}:${env.BUILD_ID}").push()
                         }
                     } else {
                         echo "Skipping push for branch ${getGitBranchName()}"
