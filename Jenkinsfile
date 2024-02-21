@@ -65,7 +65,7 @@ pipeline {
         stage('Push Docker Image2') {
             steps {
                 script {
-                    if (getGitBranchName() == 'main') {
+                    if (getGitBranchName() == '*/main') {
                         echo 'Pushing Docker Image...'
                         // Comandos para construir y empujar la imagen Docker
                     } else {
