@@ -61,14 +61,13 @@ pipeline {
 
                     if (branchName == 'main') {
                         
-                        // Iniciar sesión en Amazon ECR
-                        sh("aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin ${ECR_REGISTRY}")
-                        
                         // Etiquetar la imagen para Amazon ECR
                         sh("docker tag ${dockerImageName} ${ecrImageName}")
                         
-                        // Empujar la imagen a Amazon ECR
-                        sh("docker push ${ecrImageName}")
+                        withAWS(credentials: AWS_ECR_CREDENTIALS_ID, region: 'eu-west-1') {
+                            sh "aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin ${ECR_REGISTRY}"
+                            sh "docker push ${ecrImageName}"
+                        }
                     } else {
                         // Iniciar sesión en el registro Docker
                         docker.withRegistry('https://index.docker.io/v1/', DOCKER_CREDENTIALS_ID) {
