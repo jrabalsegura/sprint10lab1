@@ -21,18 +21,7 @@ spec:
         env:
         - name: DATABASE_URI
           value: "postgresql://user:password@db-service/dbname"
-        readinessProbe:
-          exec:
-            command:
-            - sh
-            - -c
-            - >
-              until pg_isready -h db-service -U user -d dbname; do
-                echo waiting for database;
-                sleep 2;
-              done;
-          initialDelaySeconds: 5
-          periodSeconds: 5
+        
 
 ---
 apiVersion: v1
