@@ -71,9 +71,7 @@ pipeline {
                             docker.image(ecrImageName).push()
                         }
                     } else {
-                        // Iniciar sesión en el registro Docker
                         docker.withRegistry('https://index.docker.io/v1/', DOCKER_CREDENTIALS_ID) {
-                            // Empujar la imagen al registro Docker
                             docker.image("${IMAGE_NAME}:latest").push()
                         }
                     }
