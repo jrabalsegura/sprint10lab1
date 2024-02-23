@@ -1,6 +1,6 @@
 # Creación de un entorno local de desarrollo
 
-Parte 2 del proyecto final de Bootcamp Devops. Instrucciones de desarrollo y testing local.
+Parte 1 del proyecto final de Bootcamp Devops. Instrucciones de desarrollo y testing local.
 
 ## Clonado del proyecto y testing
 
