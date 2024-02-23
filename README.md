@@ -30,6 +30,10 @@ Para configurar un entorno de desarrollo local y comenzar a contribuir al proyec
     pytest --cov=app tests/test.py --cov-report term --cov-fail-under=80
     ```
 
+Como se puede apreciar, los test locales utilizan una fixture de pytest para simular que nuestra api y la base de datos están levantadas y en funcionamiento, se pide seguir el mismo esquema en el archivo test.py
+
+Para preuebas reales de integración levantar el entorno local con el comando kubectl, cómo se explica en [Entorno Local](#ejecución-del-entorno-local-para-pruebas)
+
 ## Arquitectura del Software
 
 La arquitectura de la solución se basa en proporcionar una infraestructura escalable, segura y eficiente, con alta disponibilidad, para desplegar una aplicación web moderna. Aquí se detallan los componentes principales:
