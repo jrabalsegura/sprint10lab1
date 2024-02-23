@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: app
-        image: gallasmur/mi-aplicacion-flask-main:28
+        image: gallasmur/mi-aplicacion-flask-kubectlBranch:latest
         command: ["/bin/bash", "-c", "./manage.sh && python run.py"]
         ports:
         - containerPort: 5000

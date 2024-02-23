@@ -4,7 +4,7 @@ pipeline {
         DOCKER_CREDENTIALS_ID = 'docker-hub-credentials'
         AWS_ECR_CREDENTIALS_ID = 'aws-ecr-credentials'
         ECR_REGISTRY = '149032109728.dkr.ecr.eu-west-1.amazonaws.com/proyectofinal'
-        IMAGE_NAME = "gallasmur/mi-aplicacion-flask-${getGitBranchName()}"
+        IMAGE_NAME = "gallasmur/mi-aplicacion-flask-${BRANCH_NAME}"
     }
 
     stages {
@@ -45,7 +45,7 @@ pipeline {
             steps {
                 script {
                     // Paso 5: Construir la imagen Docker
-                    docker.build("${IMAGE_NAME}:${env.BUILD_ID}")
+                    docker.build("${IMAGE_NAME}:latest")
                 }
             }
         }
@@ -57,7 +57,7 @@ pipeline {
                     def dockerImageName = "${IMAGE_NAME}:${imageTag}"
                     def ecrImageName = "${ECR_REGISTRY}:${imageTag}"
 
-                    if (getGitBranchName() == 'main') {
+                    if (env.BRANCH_NAME == 'main') {
                         
                         // Etiquetar la imagen para Amazon ECR
                         sh("docker tag ${dockerImageName} ${ecrImageName}")
@@ -70,16 +70,12 @@ pipeline {
                         // Iniciar sesión en el registro Docker
                         docker.withRegistry('https://index.docker.io/v1/', DOCKER_CREDENTIALS_ID) {
                             // Empujar la imagen al registro Docker
-                            docker.image("${IMAGE_NAME}:${env.BUILD_ID}").push()
+                            docker.image("${IMAGE_NAME}:latest").push()
                         }
                     }
                 }
             }
         }
     }
-}
-
-def getGitBranchName() {
-    return scm.branches[0].name.substring(2)
 }
 
