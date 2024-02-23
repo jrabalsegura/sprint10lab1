@@ -1,3 +1,77 @@
+# Creación de un entorno local de desarrollo
+
+Parte 2 del proyecto final de Bootcamp Devops. Instrucciones de desarrollo y testing local.
+
+## Clonado del proyecto y testing
+
+Para configurar un entorno de desarrollo local y comenzar a contribuir al proyecto, sigue estos pasos:
+
+1. Clona el repositorio desde GitHub:
+
+    ```bash
+    git clone https://github.com/jrabalsegura/sprint10lab1.git
+    ```
+
+2. Instala las dependencias del proyecto:
+
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+3. Para ejecutar los tests utiliza el siguiente comando:
+
+    ```bash
+    pytest tests/test.py
+    ```
+
+4. Para verificar que la cobertura de las pruebas es superior al 80%, ejecuta:
+
+    ```bash
+    pytest --cov=app tests/test.py --cov-report term --cov-fail-under=80
+    ```
+
+## Arquitectura del Software
+
+La arquitectura de la solución se basa en proporcionar una infraestructura escalable, segura y eficiente, con alta disponibilidad, para desplegar una aplicación web moderna. Aquí se detallan los componentes principales:
+
+- **Autoescalado y Balanceo de Carga**: Se implementa el Horizontal Pod Autoscaler para ajustar automáticamente el número de pods en función del uso de CPU.
+
+- **Terminadores SSL**: Se utiliza AWS Elastic Load Balancer como terminador SSL.
+
+- **Bases de Datos**: La base de datos PostgreSQL se despliega dentro del cluster de Kubernetes utilizando Persistent Volumes de Kubernetes.
+
+- **Telemetría**: Cloudwatch de AWS para la recolección y almacenamiento de métricas, y Grafana para la visualización de las mismas.
+
+Para obtener más detalles sobre la arquitectura, consulta la sección "Arquitectura de la Solución" en la memoria del proyecto.
+
+## Ejecución del Entorno Local para Pruebas
+
+Para lanzar el entorno de Kubernetes local para pruebas, utiliza el siguiente comando:
+
+```bash
+kubectl apply -f db-deployment.yaml,app-deployment.yaml,app-hpa.yaml,postgres-pvc.yaml
+```
+
+Una vez desplegado, puedes acceder a la aplicación en http://localhost:30007/data.
+
+E interactuar con sus endpoints usando bien un navegador o una aplicación como Postman.
+
+## Normas de Colaboración
+
+- Crear un nuevo branch para cada desarrollo o bugfix.
+- Modificar la línea 18 del fichero `app-deployment.yaml` con el nombre del contenedor Docker correspondiente al branch del desarrollador para realizar pruebas locales, sustituyendo la parte "kubectlbranch" con el nombre de tu propia rama:
+
+```
+image: gallasmur/mi-aplicacion-flask-kubectlbranch:latest
+```
+
+- Al finalizar el trabajo, crear una pull request a la rama `main`.
+- Las pull requests serán revisadas por pares y aceptadas si superan la revisión.
+
+Una vez se añada el código a rama main, nuestro pipeline Jenkins automáticamente creará una nueva imagen y la subirá al registro ECR de AWS en lugar de a Docker Hub, con lo que ésta podrá pasar a producción.
+
+---
+
 # Creación de Pipeline de CI
 
 Parte 2 del proyecto final de Bootcamp Devops. Instrucciones de configuración y uso.
@@ -94,4 +168,4 @@ stage('Deploy to EKS') {
 
 ```
 
-Además, en Terraform habrían quedado configurados servicios como CloudWatch y ELB, con lo que esta pipeline solo nos ocupamos del despiegue al cluster de la nueva versión de la aplicación.
+Además, en Terraform habrían quedado configurados servicios como CloudWatch y ELB, con lo que en esta pipeline solo nos ocupamríamos del despiegue al cluster EKS de la nueva versión de la aplicación.
