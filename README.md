@@ -66,7 +66,7 @@ E interactuar con sus endpoints usando bien un navegador o una aplicación como 
 - En el archivo app-deployment.yaml, cambia el nombre del contenedor Docker en la línea 18 para que refleje el nombre de tu rama de desarrollo. Reemplaza 'kubectlbranch' con el nombre de tu propia rama antes de realizar las pruebas locales.:
 
 ```
-image: gallasmur/mi-aplicacion-flask-kubectlbranch:latest
+18: image: gallasmur/mi-aplicacion-flask-kubectlbranch:latest
 ```
 
 - Al finalizar el trabajo, crear una pull request a la rama `main`.
@@ -142,7 +142,9 @@ Para habilitar el flujo de trabajo descrito anteriormente, asegúrate de seguir 
 
 ### Clonar el Repositorio
 
+```
 git clone https://github.com/jrabalsegura/sprint10lab1.git
+```
 
 ## Despliegue posterior en EKS
 
