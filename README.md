@@ -32,7 +32,7 @@ Para configurar un entorno de desarrollo local y comenzar a contribuir al proyec
 
 Como se puede apreciar, los test locales utilizan una fixture de pytest para simular que nuestra api y la base de datos están levantadas y en funcionamiento, se pide seguir el mismo esquema en el archivo test.py
 
-Para preuebas reales de integración levantar el entorno local con el comando kubectl, cómo se explica en [Entorno Local](#ejecución-del-entorno-local-para-pruebas)
+Para preebas reales de integración, se debe levantar el entorno local utlizando el comando kubectl, cómo se explica en [Entorno Local](#ejecución-del-entorno-local-para-pruebas)
 
 ## Arquitectura del Software
 
@@ -63,7 +63,7 @@ E interactuar con sus endpoints usando bien un navegador o una aplicación como 
 ## Normas de Colaboración
 
 - Crear un nuevo branch para cada desarrollo o bugfix.
-- Modificar la línea 18 del fichero `app-deployment.yaml` con el nombre del contenedor Docker correspondiente al branch del desarrollador para realizar pruebas locales, sustituyendo la parte "kubectlbranch" con el nombre de tu propia rama:
+- En el archivo app-deployment.yaml, cambia el nombre del contenedor Docker en la línea 18 para que refleje el nombre de tu rama de desarrollo. Reemplaza 'kubectlbranch' con el nombre de tu propia rama antes de realizar las pruebas locales.:
 
 ```
 image: gallasmur/mi-aplicacion-flask-kubectlbranch:latest
@@ -72,7 +72,7 @@ image: gallasmur/mi-aplicacion-flask-kubectlbranch:latest
 - Al finalizar el trabajo, crear una pull request a la rama `main`.
 - Las pull requests serán revisadas por pares y aceptadas si superan la revisión.
 
-Una vez se añada el código a rama main, nuestro pipeline Jenkins automáticamente creará una nueva imagen y la subirá al registro ECR de AWS en lugar de a Docker Hub, con lo que ésta podrá pasar a producción.
+Una vez que se fusiona el código en la rama principal (main), nuestro pipeline Jenkins generará automáticamente una nueva imagen Docker y la cargará en el registro ECR de AWS en lugar de en Docker Hub. Esto permitirá que la imagen pase a producción.
 
 ---
 
@@ -172,4 +172,4 @@ stage('Deploy to EKS') {
 
 ```
 
-Además, en Terraform habrían quedado configurados servicios como CloudWatch y ELB, con lo que en esta pipeline solo nos ocupamríamos del despiegue al cluster EKS de la nueva versión de la aplicación.
+Además, en Terraform se habrían configurado servicios como CloudWatch y ELB. Por lo tanto, en este pipeline nos centraremos únicamente en el despliegue de la nueva versión de la aplicación en el clúster EKS.
