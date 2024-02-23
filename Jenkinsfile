@@ -44,8 +44,12 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    // Paso 5: Construir la imagen Docker
-                    docker.build("${IMAGE_NAME}:latest")
+
+                    if (env.BRANCH_NAME == 'main') {                      
+                        docker.build("${IMAGE_NAME}:${env.BUILD_ID}")                 
+                    } else {
+                         docker.build("${IMAGE_NAME}:latest")
+                    }
                 }
             }
         }

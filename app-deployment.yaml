@@ -14,13 +14,14 @@ spec:
     spec:
       containers:
       - name: app
-        image: gallasmur/mi-aplicacion-flask-kubectlBranch:latest
+        image: gallasmur/mi-aplicacion-flask-kubectlbranch:latest
         command: ["/bin/bash", "-c", "./manage.sh && python run.py"]
         ports:
         - containerPort: 5000
         env:
         - name: DATABASE_URI
           value: "postgresql://user:password@db-service/dbname"
+        
 
 ---
 apiVersion: v1
