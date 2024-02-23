@@ -45,7 +45,7 @@ pipeline {
             steps {
                 script {
                     // Paso 5: Construir la imagen Docker
-                    docker.build("${IMAGE_NAME}:${env.BUILD_ID}")
+                    docker.build("${IMAGE_NAME}:latest")
                 }
             }
         }
@@ -70,7 +70,7 @@ pipeline {
                         // Iniciar sesión en el registro Docker
                         docker.withRegistry('https://index.docker.io/v1/', DOCKER_CREDENTIALS_ID) {
                             // Empujar la imagen al registro Docker
-                            docker.image("${IMAGE_NAME}:${env.BUILD_ID}").push()
+                            docker.image("${IMAGE_NAME}:latest").push()
                         }
                     }
                 }
